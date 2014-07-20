@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <style>
+        svg {
+            border: 1px solid red;
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<script type='text/javascript'>
+var w = 600;
+var h = 400;
+
+//setup our display area
+var svg = d3.select('body')
+            .append('svg')
+            .attr('w',w+'px')
+            .attr('h',h+'px');
+
+//setup a projection
+var projection = d3.geo.albersUsa()
+    .translate([w/2,h/2])
+    .scale(750) //1000 is the default scale
+    ;
+
+var path = d3.geo.path().projection(projection);
+
+//load the data
+d3.json('us-states.json', function(json) {
+    //when the json file is loaded
+    // set up the paths for each state
+    svg.selectAll('path')
+        .data(json.features)
+        .enter()
+        .append("path")
+        .attr('d',path) //bind the converter
+        ;
+});
+
+
+</script>
+</body>
+</html>
